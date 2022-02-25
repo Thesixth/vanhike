@@ -1,0 +1,49 @@
+<%- layout('layouts/boilerplate') %>
+<form action="/hikes" method="POST" novalidate class="needs-validation">
+  <div class="mb-3">
+    <label class="form-label" for="title">Title</label>
+    <input
+      class="form-control"
+      type="text"
+      name="hike[title]"
+      id="title"
+      required
+    />
+    <div class="invalid-feedback">Please provide a Title.</div>
+  </div>
+  <div class="mb-3">
+    <label class="form-label" for="description">Description</label>
+    <input
+      class="form-control"
+      type="textarea"
+      name="hike[description]"
+      id="description"
+      required
+    />
+    <div class="invalid-feedback">Please provide a description.</div>
+  </div>
+  <div class="mb-3">
+    <label class="form-label" for="image">Image Url</label>
+    <input
+      class="form-control"
+      type="text"
+      name="hike[image]"
+      id="image"
+      required
+    />
+    <div class="invalid-feedback">Please provide a image url.</div>
+  </div>
+  <div class="mb-3">
+    <label class="form-label" for="location">Location</label>
+    <input
+      class="form-control"
+      type="text"
+      name="hike[location]"
+      id="location"
+      required
+    />
+    <div class="invalid-feedback">Please provide a location.</div>
+  </div>
+  <button class="btn btn-success">Submit</button>
+</form>
+<a href="/hikes">Cancel</a>

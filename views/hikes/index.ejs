@@ -1,0 +1,8 @@
+<%- layout('layouts/boilerplate') %>
+<h1>Hikes in Vancouver</h1>
+<a href="/hikes/new">Add a new hike</a>
+<ul>
+  <% for (let hike of hikes) { %>
+  <li><a href="/hikes/<%= hike._id %>"><%= hike.title %></a></li>
+  <% } %>
+</ul>
