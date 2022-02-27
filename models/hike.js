@@ -3,10 +3,19 @@ const Review = require("./review");
 // to shorten the need to type mongoose.Schema each time
 const Schema = mongoose.Schema;
 
+const ImageSchema = new Schema({
+  url: String,
+  filename: String,
+});
+
+ImageSchema.virtual("thumbnail").get(function () {
+  return this.url.replace("/upload", "/upload/w_200");
+});
+
 const HikeSchema = new Schema({
   title: String,
   pass: String,
-  images: String,
+  images: [ImageSchema],
   description: String,
   location: String,
   author: {
