@@ -1,7 +1,14 @@
 <%- layout('layouts/boilerplate') %>
+
+<script src='https://api.mapbox.com/mapbox-gl-js/v2.7.0/mapbox-gl.js'></script>
+<link href='https://api.mapbox.com/mapbox-gl-js/v2.7.0/mapbox-gl.css' rel='stylesheet' />
+
+
 <link rel="stylesheet" href="/stylesheets/stars.css" />
+
 <div class="row">
   <div class="col-6">
+    <div id='map' style='width: 400px; height: 300px;'></div>
     <div
       id="carouselControls"
       class="carousel slide"
@@ -157,3 +164,8 @@
     <% } %>
   </div>
 </div>
+<script >
+  const mapToken = "<%-process.env.MAPBOX_TOKEN%>";
+  const hikelocation = <%- JSON.stringify(singlehike) %>
+</script>
+<script src="/js/showMap.js"></script>

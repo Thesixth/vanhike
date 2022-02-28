@@ -1,4 +1,7 @@
 const Hike = require("../models/hike");
+const mapboxGeoCoding = require("@mapbox/mapbox-sdk/services/geocoding");
+const mapBoxToken = process.env.MAPBOX_TOKEN;
+const geocoder = mapboxGeoCoding({ accessToken: mapBoxToken });
 const { cloudinary } = require("../cloudinary");
 
 module.exports.index = async (req, res) => {
@@ -13,14 +16,21 @@ module.exports.newForm = (req, res) => {
 module.exports.createHike = async (req, res) => {
   if (!req.body.hike)
     throw new ExpressError("Please provide the necessary data", 400);
-
+  const geoData = await geocoder
+    .forwardGeocode({
+      query: req.body.hike.location,
+      limit: 1,
+    })
+    .send();
   const newhike = new Hike(req.body.hike);
+  newhike.geometry = geoData.body.features[0].geometry;
   newhike.images = req.files.map((f) => ({
     url: f.path,
     filename: f.filename,
   }));
   newhike.author = req.user._id;
   await newhike.save();
+  console.log(newhike);
   req.flash("success", "You have successfully added a new Hike");
   res.redirect(`/hikes/${newhike._id}`);
 };
