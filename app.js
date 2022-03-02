@@ -94,7 +94,7 @@ app.use("/hikes/:id/review", reviewsRoutes);
 app.use("/", usersRoutes);
 
 app.get("/", (req, res) => {
-  res.render("Home");
+  res.render("home");
 });
 
 // error handling
