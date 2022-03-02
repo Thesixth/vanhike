@@ -14,18 +14,19 @@ const flash = require("connect-flash");
 const passport = require("passport");
 const localStrategy = require("passport-local");
 const User = require("./models/user");
+const MongoDBStore = require("connect-mongo");
 
 //require routes
 const hikesRoutes = require("./routes/hike");
 const reviewsRoutes = require("./routes/review");
 const usersRoutes = require("./routes/users");
-
 //connect to database
-mongoose.connect("mongodb://localhost:27017/hike", {
+const dbUrl = process.env.MONGODB_URL || "mongodb://localhost:27017/hike";
+const secret = process.env.SECRET || "sess secret";
+mongoose.connect(dbUrl, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
-
 //shorten code by using the variable db
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "Connection error:"));
@@ -41,13 +42,27 @@ app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
 app.use(express.static(path.join(__dirname, "public")));
 
+const store = MongoDBStore.create({
+  mongoUrl: dbUrl,
+  touchAfter: 24 * 60 * 60,
+  crypto: {
+    secret,
+  },
+});
+
+store.on("error", function (e) {
+  console.log("session store error");
+});
 const sessionConfig = {
-  secret: "sess secret",
+  store,
+  name: "session",
+  secret,
   resave: false,
   saveUninitialized: true,
   cookie: {
     // httponly is security against scripting
     httpOnly: true,
+    // secure: true,
     // a week: 1000 milliseconds in a second. 60 sec in a min, 60min in hour , 24h in a day,
     // do you really want me to write what comes next?
     expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
