@@ -21,7 +21,7 @@ const hikesRoutes = require("./routes/hike");
 const reviewsRoutes = require("./routes/review");
 const usersRoutes = require("./routes/users");
 //connect to database
-const dbUrl = process.env.MONGODB_URL || "mongodb://localhost:27017/hike";
+const dbUrl = process.env.MONGO_URL || "mongodb://localhost:27017/hike";
 const secret = process.env.SECRET || "sess secret";
 mongoose.connect(dbUrl, {
   useNewUrlParser: true,
@@ -109,7 +109,7 @@ app.use((err, req, res, next) => {
 });
 
 //server
-const port = 8080 || process.env.PORT;
+const port = process.env.PORT || 8080;
 app.listen(port, () => {
   console.log("listening");
 });
