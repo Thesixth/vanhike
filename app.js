@@ -109,7 +109,7 @@ app.use((err, req, res, next) => {
 });
 
 //server
-const port = 8080;
+const port = 8080 || process.env.PORT;
 app.listen(port, () => {
   console.log("listening");
 });
